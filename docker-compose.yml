@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  db:
+    container_name: "db"
+    build: ./docker/mysql
+    restart: always
+    tty: true
+    environment:
+      MYSQL_DATABASE: test_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d
+      - ./log/mysql:/var/log/mysql
+    networks:
+      - local-net
+  app:
+    links:
+      - db
+    container_name: "app"
+    build: ./docker/app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/usr/src
+    networks:
+      - local-net
+networks:
+  local-net:
+    driver: bridge
