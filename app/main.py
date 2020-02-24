@@ -18,12 +18,14 @@ app.add_middleware(
 @app.get("/tasks")
 def read_tasks():
   tasks = session.query(TaskTable).all()
+  session.close()
   return tasks
 
 # 個別タスク
 @app.get("/tasks/{task_id}")
 def read_task(task_id: int):
   task = session.query(TaskTable).filter(TaskTable.id == task_id).first()
+  session.close()
   return task
 
 # タスク作成
@@ -33,6 +35,7 @@ async def create_task(title: str):
   task.title = title
   session.add(task)
   session.commit()
+  session.close()
 
 # タスク更新
 @app.put("/tasks")
@@ -41,6 +44,7 @@ async def update_tasks(tasks: List[Task]):
     task = session.query(TaskTable).filter(TaskTable.id == new_task.id).first()
     task.title = new_task.title
     session.commit()
+    session.close()
 
 # タスク削除
 @app.delete("/tasks/{task_id}")
@@ -48,3 +52,4 @@ def read_task(task_id: int):
   task = session.query(TaskTable).filter(TaskTable.id == task_id).first()
   session.delete(task)
   session.commit()
+  session.close()
