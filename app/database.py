@@ -2,20 +2,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
-
-user_name = "test"
-password = "test"
-host = "db"
-database_name = "test_db"
-DATABASE = 'mysql://%s:%s@%s/%s?charset=utf8' % (
-  user_name,
-  password,
-  host,
-  database_name,
-)
+from core.config import MYSQL_URI
 
 ENGINE = create_engine(
-  DATABASE,
+  MYSQL_URI,
   encoding="utf-8",
   echo=True
 )
