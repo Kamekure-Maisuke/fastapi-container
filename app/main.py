@@ -3,8 +3,13 @@ from typing import List
 from starlette.middleware.cors import CORSMiddleware
 from database import session
 from models.task import TaskTable, Task
+from starlette.requests import Request
+from starlette.staticfiles import StaticFiles
+from starlette.templating import Jinja2Templates
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory = "templates")
 
 app.add_middleware(
   CORSMiddleware,
@@ -13,6 +18,11 @@ app.add_middleware(
   allow_methods=["*"],
   allow_headers=["*"],
 )
+
+# 初期ページ
+@app.get("/")
+async def main(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 # 全タスク
 @app.get("/tasks")
