@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from sqlalchemy import Column, Integer, String
 from pydantic import BaseModel
-from db import Base
-from db import ENGINE
+from database import Base
+from database import ENGINE
 
 class TaskTable(Base):
   __tablename__ = 'task'
@@ -16,6 +16,3 @@ class Task(BaseModel):
 
 def main():
   Base.metadata.create_all(bind=ENGINE)
-
-if __name__ == "__main__":
-  main()

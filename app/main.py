@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from typing import List
 from starlette.middleware.cors import CORSMiddleware
-from db import session
-from model import TaskTable, Task
+from database import session
+from models.task import TaskTable, Task
 
 app = FastAPI()
 
